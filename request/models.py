@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from socket import gethostbyaddr
-
+from ipware.ip import get_ip
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.db import models
@@ -64,7 +64,8 @@ class Request(models.Model):
         self.is_ajax = request.is_ajax()
 
         # User information.
-        self.ip = request.META.get('REMOTE_ADDR', '')
+        self.ip = get_ip(request) if not None else '0.0.0.0'
+        
         self.referer = request.META.get('HTTP_REFERER', '')[:255]
         self.user_agent = request.META.get('HTTP_USER_AGENT', '')[:255]
         self.language = request.META.get('HTTP_ACCEPT_LANGUAGE', '')[:255]
