@@ -16,10 +16,16 @@ from .traffic import modules
 
 
 class RequestAdmin(admin.ModelAdmin):
-    list_display = ('time', 'path', 'response', 'method', 'request_from')
+    def load_time_field(self, obj):
+        return "{} ms".format(int(obj.load_time))
+    load_time_field.admin_order_field = 'load_time'
+    load_time_field.short_description = 'Load Time'
+    
+    
+    list_display = ('time', 'path', 'response', 'method', 'request_from', 'load_time_field')
     fieldsets = (
         (_('Request'), {
-            'fields': ('method', 'path', 'time', 'is_secure', 'is_ajax')
+            'fields': ('method', 'path', 'time', 'load_time_field', 'is_secure', 'is_ajax')
         }),
         (_('Response'), {
             'fields': ('response',)
@@ -29,7 +35,7 @@ class RequestAdmin(admin.ModelAdmin):
         })
     )
     raw_id_fields = ('user',)
-    readonly_fields = ('time',)
+    readonly_fields = ('time', 'load_time_field')
 
     def get_queryset(self, request):
         return super(RequestAdmin, self).get_queryset(request).select_related('user')

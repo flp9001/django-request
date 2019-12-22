@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from django.db.models import Count
+from django.db.models import Count, Avg
 from django.template.loader import render_to_string
 
 from . import settings
@@ -117,7 +117,17 @@ class TopPaths(Plugin):
 
     def template_context(self):
         return {
-            'paths': self.queryset().values('path').annotate(Count('path')).order_by('-path__count')[:10]
+            'paths': self.queryset().values('path').annotate(Count('path'), Avg('load_time')).order_by('-path__count')[:10]
+        }
+
+
+class TopSlowPaths(TopPaths):
+    template = 'request/plugins/toppaths.html'
+
+
+    def template_context(self):
+        return {
+            'paths': self.queryset().values('path').annotate(Count('path')).annotate(Avg('load_time')).order_by('-load_time__avg')[:10]
         }
 
 

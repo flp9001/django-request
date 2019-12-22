@@ -26,7 +26,7 @@ TRAFFIC_MODULES = getattr(settings, 'REQUEST_TRAFFIC_MODULES', (
 PLUGINS = getattr(settings, 'REQUEST_PLUGINS', (
     'request.plugins.TrafficInformation',
     'request.plugins.LatestRequests',
-
+    'request.plugins.TopSlowPaths',
     'request.plugins.TopPaths',
     'request.plugins.TopErrorPaths',
     'request.plugins.TopReferrers',

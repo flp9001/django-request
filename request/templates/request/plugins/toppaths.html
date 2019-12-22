@@ -4,11 +4,13 @@
     <tr>
         <th>{% trans "Path" %}</th>
         <th>{% trans "Visits" %}</th>
+        <th>{% trans "Avg Load Time" %}</th>
     </tr>
     {% for path in paths %}
         <tr>
             <td><a href="{% url "admin:request_request_changelist" %}?path={{ path.path }}" title="{{ path.path }}">{{ path.path|truncatechars:60 }}</a></td>
             <td>{{ path.path__count }}</td>
+            <td>{{ path.load_time__avg|floatformat:0 }} ms</td>
         </tr>
     {% endfor %}
 {% endblock %}

@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from time import time
 from . import settings
 from .models import Request
 from .router import Patterns
@@ -12,7 +13,12 @@ except ImportError:
 
 
 class RequestMiddleware(MiddlewareMixin):
+    def process_request(self, request):
+        request.start_time = time()
+        
     def process_response(self, request, response):
+        request.load_time = (time() - request.start_time)*1000 # milliseconds
+        
         if request.method.lower() not in settings.VALID_METHOD_NAMES:
             return response
 

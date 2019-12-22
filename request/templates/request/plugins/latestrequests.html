@@ -6,6 +6,7 @@
         <th>{% trans "From" %}</th>
         <th>{% trans "Response" %}</th>
         <th>{% trans "Time" %}</th>
+        <th>{% trans "Load Time" %}</th>
     </tr>
     {% for request in requests %}
         <tr>
@@ -15,6 +16,7 @@
             <td><a href="{% url "admin:request_request_change" request.id %}">
                 <abbr class="timeago" title="{{ request.time|date:"c" }}">{{ request.time|date:"D M d H:i:s O Y" }}</abbr>
             </a></td>
+            <td>{{ request.load_time|floatformat:0 }} ms</td>
         </tr>
     {% endfor %}
 {% endblock %}
