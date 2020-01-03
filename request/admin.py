@@ -9,6 +9,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.utils.html import format_html
 from django.utils.translation import ugettext_lazy as _
+from django.contrib.admin import DateFieldListFilter
 
 from .models import Request
 from .plugins import plugins
@@ -17,12 +18,17 @@ from .traffic import modules
 
 class RequestAdmin(admin.ModelAdmin):
     def load_time_field(self, obj):
-        return "{} ms".format(int(obj.load_time))
+        if obj.load_time:
+            return "{} ms".format(int(obj.load_time))
     load_time_field.admin_order_field = 'load_time'
     load_time_field.short_description = 'Load Time'
     
     
-    list_display = ('time', 'path', 'response', 'method', 'request_from', 'load_time_field')
+    list_display = ('time', 'path', 'response', 'method', 'request_from', 'load_time_field', 'referer')
+    list_filter = (('time', DateFieldListFilter), 'path', 'referer', 'ip',)
+    search_fields = ('path', 'referer', 'ip', 'response', 'method')
+    
+    date_hierarchy = 'time'
     fieldsets = (
         (_('Request'), {
             'fields': ('method', 'path', 'time', 'load_time_field', 'is_secure', 'is_ajax')
