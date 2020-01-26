@@ -25,7 +25,7 @@ class RequestAdmin(admin.ModelAdmin):
     
     
     list_display = ('time', 'path', 'response', 'method', 'request_from', 'load_time_field', 'referer')
-    list_filter = (('time', DateFieldListFilter), 'path', 'referer', 'ip',)
+    list_filter = (('time', DateFieldListFilter),  'response', 'referer', 'path','ip',)
     search_fields = ('path', 'referer', 'ip', 'response', 'method')
     
     date_hierarchy = 'time'

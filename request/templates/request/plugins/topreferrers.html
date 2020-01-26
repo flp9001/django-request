@@ -7,7 +7,7 @@
     </tr>
     {% for referer in referrers %}
         <tr>
-            <td><a href="{{ referer.referer }}" title="{{ referer.referer }}">{{ referer.referer|truncatechars:60 }}</a></td>
+            <td><a href="{% url 'admin:request_request_changelist' %}?referer={{ referer.referer }}" title="{{ referer.referer }}">{{ referer.referer|truncatechars:60 }}</a></td>
             <td>{{ referer.referer__count }}</td>
         </tr>
     {% endfor %}
